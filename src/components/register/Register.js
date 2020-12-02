@@ -6,8 +6,6 @@ class Register extends Component {
     render() {
         return (
             <div className="container mt-5">
-                <h3>Jakenpon Game</h3>
-                <br></br>
                 <h3 className="h3 text-center">Register</h3>
                 <div className="box-login m-auto border rounded">
                     <Form className="mx-5 my-4">

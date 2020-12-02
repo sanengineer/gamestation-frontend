@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Login from './components/login/login';
-import Register from './components/register/register';
+import Login from './components/login/Login';
+import Register from './components/register/Register';
 import ListGame from './components/game/ListGame';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {NavHeader} from './components/NavHeader';
+import { NavHeader } from './components/NavHeader';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
