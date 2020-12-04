@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button} from 'react-bootstrap';
+import { Form, Button, Alert} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RegUser } from './../../services/register/Register';
 
@@ -9,14 +9,36 @@ class Register extends Component {
         user : {},
         validated : false,
         classValid : "d-none",
+        classHref: "d-none",
         message : "",
-        validForm : ""
+        validForm : "",
+        typeAlert: "",
+        show : false,
+    }
+
+    showAlert = (status, type, message) => {
+        if(type === "success"){
+            this.setState({classHref: ""})
+        } else {
+            this.setState({classHref: "d-none"})
+        }
+        this.setState({ show : status, typeAlert: type, message: message})
     }
 
     reg = () => {
-        RegUser(this.user)
+        console.log(this.state.user)
+        RegUser(this.state.user)
         .then(res => {
-            console.log(res)
+            if(res.message === "register success") {
+                console.log(res)
+                this.showAlert(true, "success", res.message)
+            } else {
+                this.showAlert(true, "danger", res.message)
+            }
+            
+        })
+        .catch(err => {
+            this.showAlert(true, "danger", "404 Page Not Found")
         })
     }
 
@@ -39,7 +61,7 @@ class Register extends Component {
     onChangeForm = (e) => {
         let user = this.state.user;
         if(e.target.name === 'username'){
-            user.name = e.target.value
+            user.username = e.target.value
         } else if (e.target.name === 'email'){
             user.email = e.target.value
         } else if (e.target.name === 'password'){
@@ -51,10 +73,8 @@ class Register extends Component {
         if(("confirmPassword" in user)){
             if(user.password !== user.confirmPassword){
                 this.invalidPassword()
-                console.log("tidak sama")
             } else {
                 this.validPassword()
-                console.log("sama")
             }
         }
         
@@ -66,17 +86,25 @@ class Register extends Component {
         if(form.checkValidity() === false){
             event.preventDefault();
             event.stopPropagation();
+        } else {
+            this.reg();
         }
-        console.log("tes");
-        console.log(this.state.validated);
-
+        
         this.setState({ validated: true })
+        event.preventDefault();
     }
 
     render() {
         return (
             <div className="container mt-5">
+
+                <Alert show={this.state.show} onClose={() => this.showAlert(false) } variant={this.state.typeAlert} dismissible>
+                    <Alert.Heading>How's it going?!</Alert.Heading>
+                    <p>{this.state.message} <Link className={this.state.classHref} to="/login">Click to Login</Link></p>
+                </Alert>
+                
                 <h3 className="h3 text-center">Register</h3>
+
                 <div className="box-login m-auto border rounded">
                     <Form className="mx-5 my-4" noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
@@ -95,7 +123,6 @@ class Register extends Component {
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label className="font-weight-bold">Password</Form.Label>
                             <Form.Control className={this.state.validForm} type="password" onChange={ (e)=>this.onChangeForm(e) } name="password" placeholder="Password"  required />
-                            {/* <div className={this.state.classValid} type="invalid">{this.state.message}</div> */}
                             <Form.Control.Feedback type="invalid">Please provide a valid password.</Form.Control.Feedback>
                         </Form.Group>
                         
@@ -106,7 +133,7 @@ class Register extends Component {
                             <Form.Control.Feedback type="invalid">Please provide a valid password.</Form.Control.Feedback>
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" >
                             Submit
                         </Button>
                     </Form>
