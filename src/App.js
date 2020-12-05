@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
 import ListGame from './components/game/ListGame';
+import GamePlay from "./components/gameplay/gameplay"
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavHeader } from './components/NavHeader';
@@ -17,6 +18,7 @@ class App extends Component {
             <Route exact path="/" component={ListGame}/>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
+            <Route path="/gamePlay" component={GamePlay}/>
             {/* <Route path="/game" component={Game} />
             <Route path="/user" component={User}/>
             <Route path="/history" component={Log}/> */}
