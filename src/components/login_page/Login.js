@@ -29,9 +29,10 @@ class Login extends Component {
             if(res.status === "success"){
                 console.log(res);
                 localStorage.setItem('accessToken', res.accessToken);
+                localStorage.setItem('user_id', res.id);
                 // history.push('/')
                 this.setState({ accessToken: localStorage.getItem('accessToken')})
-            } else if( res.status === "failed") {
+            } else if( res.status === "failed" || res.status === false) {
                 console.log(res);
                 this.showAlert(true, "danger", res.message)
             }
