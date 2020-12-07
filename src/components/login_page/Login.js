@@ -68,6 +68,7 @@ class Login extends Component {
 
     render() {
         const { accessToken } = this.state
+        console.log(accessToken)
         if (accessToken !== "") return <Redirect to="/" />
         return (
             <div className="container mt-5">
