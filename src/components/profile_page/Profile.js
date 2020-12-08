@@ -11,7 +11,6 @@ class Profile extends Component  {
     }
 
     ceckUser = () => {
-        let user = this.state.user;
         GetProfile(this.state.token, this.state.id)
         .then(res => {
             console.log(res)
@@ -20,6 +19,31 @@ class Profile extends Component  {
         .catch(err => {
             console.log(err);
         })
+    }
+
+    onChange = (e) => {
+        let user = this.state.user;
+        if(e.target.name === 'username'){
+            user.username = e.target.value
+        } else if(e.target.name === 'email'){
+            user.email = e.target.email
+        } else if (e.target.name === 'firstname'){
+            user.firstname = e.target.firstname
+        } else if (e.target.name === 'lastname') {
+            user.lastname = e.target.value
+        } else if(e.target.name === 'birthday') {
+            user.birthday = e.target.value
+        } else if(e.target.name === 'gender') {
+            user.gender = e.target.value
+        } else if (e.target.name === 'address') {
+            user.address = e.target.value
+        } else if (e.target.name === 'avatar') {
+            user.avatar = e.target.value
+        } else if(e.target.name === 'newPassword') {
+            user.newPassword = e.target.value
+        }
+        this.setState(user)
+        console.log(user)
     }
 
     componentDidMount() {
@@ -53,35 +77,39 @@ class Profile extends Component  {
                         <hr></hr>
                         <Form >
                             <Form.Group>
-                                <Form.Label >Username</Form.Label>
-                                <Form.Control value={this.state.user.username} name="username" placeholder="username" />
+                                <Form.Label >UserName</Form.Label>
+                                <Form.Control value={this.state.user.username} onChange={(e) => this.onChange(e)} name="username" placeholder="username" />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>FullName</Form.Label>
-                                <Form.Control value={this.state.user.fullname} name="fullname" placeholder="fullname"/>
+                                <Form.Label >FirstName</Form.Label>
+                                <Form.Control value={this.state.user.firstname} onChange={(e) => this.onChange(e)} name="firstname" placeholder="firstname" />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label >LastName</Form.Label>
+                                <Form.Control value={this.state.user.lastname} onChange={(e) => this.onChange(e)} name="lastname" placeholder="lastname" />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control value={this.state.user.email} name="email" placeholder="email"/>
+                                <Form.Control value={this.state.user.email} onChange={(e) => this.onChange(e)} name="email" placeholder="email"/>
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Bio</Form.Label>
-                                <Form.Control as="textarea" rows={3} value={this.state.user.address} name="bio" placeholder="bio"/>
+                                <Form.Label>FullName</Form.Label>
+                                <Form.Control value={this.state.user.fullname} onChange={(e) => this.onChange(e)} name="fullname" placeholder="fullname"/>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>BirthDay</Form.Label>
+                                <Form.Control value={this.state.user.birthday} onChange={(e) => this.onChange(e)} name="birthday" placeholder="birthday"/>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Sex</Form.Label>
-                                <Form.Control as="select" value={this.state.user.gender} name="gender" >
+                                <Form.Control as="select" value={this.state.user.gender} onChange={(e) => this.onChange(e)} name="gender" >
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Job</Form.Label>
-                                <Form.Control value={this.state.user.job} name="job" placeholder="job"/>
-                            </Form.Group>
-                            <Form.Group>
                                 <Form.Label>Address</Form.Label>
-                                <Form.Control value={this.state.user.address} name="address" placeholder="address"/>
+                                <Form.Control value={this.state.user.address} onChange={(e) => this.onChange(e)} name="address" placeholder="address"/>
                             </Form.Group>
                             <Button type="submit">Update</Button>
                         </Form>
