@@ -5,7 +5,7 @@ import { Navbar, Nav} from 'react-bootstrap';
 export const NavHeader = () => {
     return(
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <NavLink className="navbar-brand" to="/">Navbar</NavLink>
+            <NavLink className="navbar-brand" to="/">Home</NavLink>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mx-auto">
