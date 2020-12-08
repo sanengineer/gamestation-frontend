@@ -10,11 +10,6 @@ import { NavHeader } from './components/NavHeader';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
-
-  state = {
-    isAuth: false
-  }
-
   render() {
     return (
       <Router>
@@ -26,10 +21,7 @@ class App extends Component {
             <Route path="/register" component={Register}/>
             <Route path="/gamePlay" component={GamePlay}/>
             <Route path="/profile" component={Profile}/>
-            {/* <Route path="/profile" component={ () => <Profile  isAuth={this.state.isAuth} />}/> */}
-            {/* <Route path="/game" component={Game} />
-            <Route path="/user" component={User}/>
-            <Route path="/history" component={Log}/> */}
+            {/* <Route path="/profile" component={ () => <Profile  isAuth={this.state.isAuth} user={this.state.user} />}/> */}
           </Switch>
         </div>
       </Router>
