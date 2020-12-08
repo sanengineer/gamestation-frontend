@@ -7,36 +7,60 @@ import {Result} from "./result";
 import "./gamePlay.css";
 import {Reset} from "./reset.js";
 import {Header} from "./header.js"
-
-
+import {ModalsConfirm} from "./modalsConfirm"
 
 class Gameplay extends Component{
 
     state={
+        selectStone:false,
+        selectPaper:false,
+        selectScissors:false,
+        comSelectStone:false,
+        comSelectPaper:false,
+        comSelectScissors:false,
+        imgHover:true,
         matchResult:"",
-        resetState:false
+        resetState:false,
+        modalsConfirm:false
     }
 
     playerClick=(idClick)=>{
-        document.getElementById(idClick).classList.add("chosen");
+        switch (idClick){
+            case "stone": this.setState({selectStone:true});
+            break;
+
+            case "paper" : this.setState({selectPaper:true});
+            break;
+
+            case "scissors" : this.setState({selectScissors:true});
+            break; 
+
+            default : return null
+        }
+        console.log(`User Choosing ${idClick}`)
         this.disableClick();
         this.comSelect(idClick);
     }
 
-    disableClick=()=>{
-        document.querySelectorAll(".player").forEach((i)=>{
-            i.classList.remove("img-hover");
-            i.setAttribute('disabled','disabled');
-        })
-    }
+    disableClick=()=> this.setState({imgHover:false});
 
     comSelect= async(idClick)=>{
             let arrComputerChoice = ["com-stone","com-scissors","com-paper"];
             let computerChoice = await arrComputerChoice[Math.floor(Math.random() *3)]
-            document.getElementById(computerChoice).classList.add('chosen');
+            switch (computerChoice){
+                case "com-stone" : this.setState({comSelectStone:true});
+                break;
+
+                case "com-scissors" : this.setState({comSelectScissors:true});
+                break;
+
+                case "com-paper" : this.setState({comSelectPaper:true});
+                break;
+
+                default : return null
+            }
             this.matchResult(idClick,computerChoice)
             
-            console.log(`Player Choosing ${idClick}`);
             console.log(`Computer Choosing ${computerChoice}`);
     }
 
@@ -78,62 +102,67 @@ class Gameplay extends Component{
     }
 
     reset=()=>{
-        console.log("resetting . . .");
-        document.querySelectorAll(".player").forEach(k=>{
-            k.removeAttribute('disabled');
-            k.classList.add("img-hover");
-        });
-        document.querySelectorAll("figure").forEach(l => {
-            l.classList.remove('chosen');
-        });
-        this.setState({matchResult:"",resetState:false});
+        this.setState({imgHover:true,selectStone:false,selectPaper:false,selectScissors:false,
+            comSelectPaper:false,comSelectScissors:false,comSelectStone:false,matchResult:"",resetState:false})
     }
     
     render(){
+        let{selectStone,selectPaper,selectScissors,comSelectPaper,comSelectScissors,comSelectStone,imgHover,
+            matchResult,resetState} = this.state;
+        let hover= imgHover? "img-hover" : "";
+        
         return(
             <div className="gameplay pt-2">
+            <Header
+            quitGame={()=>this.setState({modalsConfirm:true})}
+            />
             <Container>
-                <Header/>
                 <Row>
                     <Col>
-                        <div className="d-flex flex-column text-center col-player">
-                            <h1 className="pt-3">PLAYER</h1>
-                            <figure id="stone">  
-                                <input className="player img-assets img-hover" alt="stone" type="image" src={Stone} onClick={()=>this.playerClick("stone")}></input>
+                        <div className="d-flex flex-column text-center">
+                            <h1 className="pt-2">PLAYER</h1>
+                            <figure className={`${selectStone ? "chosen" : ""}`}>  
+                                <input className={`img-assets ${hover}`} alt="stone" type="image" disabled={!imgHover}
+                                src={Stone} onClick={()=>this.playerClick("stone")}></input>
                             </figure>
-                            <figure id="paper">
-                                <input className="player img-assets img-hover " alt="paper" type="image" src={Paper} onClick={()=>this.playerClick("paper")}></input>
+                            <figure className={`${selectPaper ? "chosen" : ""}`}>
+                                <input className={`img-assets ${hover}`} alt="paper" type="image" disabled={!imgHover}
+                                src={Paper} onClick={()=>this.playerClick("paper")}></input>
                             </figure>
-                            <figure id="scissors">
-                                <input className="player img-assets img-hover" alt="scissors" type="image" src={Scissors} onClick={()=>this.playerClick("scissors")}></input>
+                            <figure className={`${selectScissors ? "chosen" : ""}`}>
+                                <input className={`img-assets ${hover}`} alt="scissors" type="image" disabled={!imgHover}
+                                src={Scissors} onClick={()=>this.playerClick("scissors")}></input>
                             </figure>
                         </div>
                     </Col>
                     <Col>
                         <Result 
-                        className="result"
-                        matchResult={this.state.matchResult}
+                        matchResult={matchResult}
                         />
                         <Reset
-                        resetState={this.state.resetState}
+                        resetState={resetState}
                         reset={()=>this.reset()}
                         />
                     </Col>
                     <Col>
                         <div className="d-flex flex-column text-center">
-                            <h1 className="pt-3">COMPUTER</h1>
-                            <figure id="com-stone">
+                            <h1 className="pt-2">COMPUTER</h1>
+                            <figure className={`${comSelectStone ? "chosen" : ""}`}>
                                 <input className="com img-assets" alt="stone" type="image" src={Stone}></input>
-                            </figure>
-                            <figure id="com-paper">
+                            </figure >
+                            <figure className={`${comSelectPaper ? "chosen" : ""}`}>
                                 <input className="com img-assets" alt="paper" type="image" src={Paper}></input>
                             </figure>
-                            <figure id="com-scissors">
+                            <figure className={`${comSelectScissors ? "chosen" : ""}`}>
                                 <input className="com img-assets" alt="scissors" type="image" src={Scissors}></input>
                             </figure>
                         </div>
                     </Col>
                 </Row>
+                <ModalsConfirm
+                toogle = {this.state.modalsConfirm}
+                closeModals={()=>this.setState({modalsConfirm:false})}
+                />
             </Container>   
             </div>             
         )
