@@ -66,11 +66,18 @@ class Profile extends Component  {
     }
 
     handleSubmit = (event) => {
+        this.setState({loading: true})
         event.preventDefault();
         console.log(this.state.user)
         UpdateProfile(this.state.token, this.state.id, this.state.user)
-        .then(res=> console.log(res))
-        .catch(err=>console.log(err))
+        .then(res=> {
+            console.log(res);
+            this.setState({loading: false})
+        })
+        .catch(err=>{
+            console.log(err);
+            this.setState({loading: false})
+        })
     }
 
     render() {
