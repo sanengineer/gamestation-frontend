@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 class ListGame extends Component {
     render() {
         return (
-            <div className="mt-5">
+            <div className="mt-5 text-center">
                 <Table hover className="w-50 mx-auto">
                     <tbody>
                         <tr>
