@@ -1,17 +1,18 @@
 import React from 'react';
-import {NavLink, Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import { Navbar, Nav} from 'react-bootstrap';
 
 export const NavHeader = () => {
     return(
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <Link className="navbar-brand" to="/">Navbar</Link>
+            <NavLink className="navbar-brand" to="/">Navbar</NavLink>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mx-auto">
                     <NavLink className="nav-link" to="/game">Game</NavLink>
                     <NavLink className="nav-link" to="/user">User</NavLink>
                     <NavLink className="nav-link" to="/history">History</NavLink>
+                    <NavLink className="nav-link" to="/profile">Profile</NavLink>
                 </Nav>
                 <Nav>
                     <NavLink className="nav-link" to="/login">Login</NavLink>
