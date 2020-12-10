@@ -7,13 +7,14 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavHeader } from './components/NavHeader';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { NavLoggedIn } from './components/NavBar_homepage/NavLoggedIn';
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div className="App">
-          <NavHeader></NavHeader>
+          <NavLoggedIn></NavLoggedIn>
           <Switch>
             <Route exact path="/" component={ListGame}/>
             <Route path="/login" component={Login}/>
