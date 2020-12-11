@@ -1,0 +1,33 @@
+import React, { Component } from 'react';
+import {Table} from 'react-bootstrap';
+import {Link} from 'react-router-dom'
+
+class ListGame extends Component {
+    render() {
+        return (
+            <div class="card">
+  <img src="img_avatar.png" alt="Avatar" style="width:100%">
+  <div class="container">
+    <h4><b>John Doe</b></h4>
+    <p>Architect & Engineer</p>
+</div>
+            <div className="mt-5">
+                <Table hover className="w-50 mx-auto">
+                    <tbody>
+                        <tr>
+                            <td><Link className="text-dark" to="/gameplay">RPS</Link></td>     
+                        </tr>
+                        <tr>
+                            <td>Chicken Cross</td>
+                        </tr>
+                        <tr>
+                            <td>Ular Tangga</td>
+                        </tr>
+                    </tbody>
+                </Table>
+          </div>
+        )
+    }
+}
+
+export default ListGame;
