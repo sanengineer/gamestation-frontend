@@ -7,3 +7,15 @@ export async function GetProfile(token, id) {
     });
     return await response.json();
 }
+
+export async function UpdateProfile(token, id, user) {
+    const response = await fetch(`https://kerbagungame.herokuapp.com/api/v1/user/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type' : 'application/json',
+            'Authorization' : token
+        },
+        body: JSON.stringify(user)
+    });
+    return await response.json();
+}

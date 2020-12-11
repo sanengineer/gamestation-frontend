@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Button, Alert} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { RegUser } from './../../services/register/Register';
+import LoadingMask from 'react-loadingmask';
+import 'react-loadingmask/dist/react-loadingmask.css';
 
 class Register extends Component {
 
@@ -14,6 +16,9 @@ class Register extends Component {
         validForm : "",
         typeAlert: "",
         show : false,
+        isAuthenticated: true,
+        accessToken: localStorage.getItem('accessToken'),
+        loading: false
     }
 
     showAlert = (status, type, message) => {
@@ -32,13 +37,16 @@ class Register extends Component {
             if(res.message === "register success") {
                 console.log(res)
                 this.showAlert(true, "success", res.message)
+                this.setState({ isAuthenticated: false, loading: false})
             } else {
                 this.showAlert(true, "danger", res.message)
+                this.setState({ isAuthenticated: true, loading: false})
             }
             
         })
         .catch(err => {
             this.showAlert(true, "danger", "404 Page Not Found")
+            this.setState({ isAuthenticated: true, loading: false})
         })
     }
 
@@ -82,6 +90,7 @@ class Register extends Component {
     }
 
     handleSubmit = (event) => {
+        this.setState({loading: true})
         const form = event.currentTarget;
         if(form.checkValidity() === false){
             event.preventDefault();
@@ -95,7 +104,12 @@ class Register extends Component {
     }
 
     render() {
+        const { accessToken, isAuthenticated } = this.state
+        if(isAuthenticated === false || accessToken !== null){
+            return <Redirect to="/login" />
+        }
         return (
+            <LoadingMask loading={this.state.loading} loadingText={"loading..."}>
             <div className="container mt-5">
 
                 <Alert show={this.state.show} onClose={() => this.showAlert(false) } variant={this.state.typeAlert} dismissible>
@@ -142,6 +156,7 @@ class Register extends Component {
                     Have An Account? Let's <Link to="/login">Login</Link>
                 </p>
             </div>
+            </LoadingMask>
         )
     }
 }

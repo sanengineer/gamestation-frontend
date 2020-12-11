@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Form, Button, Alert} from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import {SignIn} from './../../services/login/Login';
+import LoadingMask from 'react-loadingmask';
+import 'react-loadingmask/dist/react-loadingmask.css';
 
 class Login extends Component {
     state = {
@@ -10,7 +12,9 @@ class Login extends Component {
         classHref: "d-none",
         message : "",
         show: false,
-        accessToken: ""
+        accessToken: localStorage.getItem('accessToken'),
+        isAuthenticated: true,
+        loading: false
     }
 
     showAlert = (status, type, message) => {
@@ -30,15 +34,16 @@ class Login extends Component {
                 console.log(res);
                 localStorage.setItem('accessToken', res.accessToken);
                 localStorage.setItem('user_id', res.id);
-                // history.push('/')
-                this.setState({ accessToken: localStorage.getItem('accessToken')})
+                this.setState({ accessToken: localStorage.getItem('accessToken'), isAuthenticated: false,  loading: false})
             } else if( res.status === "failed" || res.status === false) {
                 console.log(res);
                 this.showAlert(true, "danger", res.message)
+                this.setState({ isAuthenticated: true,  loading: false})
             }
         })
         .catch(err => {
             this.showAlert(true, "danger", "404 Page Not Found")
+            this.setState({ isAuthenticated: true, loading: false})
         })
     }
 
@@ -54,6 +59,8 @@ class Login extends Component {
     }
 
     handleSubmit = (event) => {
+        this.setState({loading: true})
+        console.log("handle")
         const form = event.currentTarget;
         if(form.checkValidity() === false){
             event.preventDefault();
@@ -62,15 +69,22 @@ class Login extends Component {
             this.signin();
         }
         
-        this.setState({ validated: true })
+        this.setState({ validated: true})
         event.preventDefault();
     }
+   
 
     render() {
-        const { accessToken } = this.state
-        console.log(accessToken)
-        if (accessToken !== "") return <Redirect to="/" />
+        const { accessToken, isAuthenticated, loading } = this.state
+        // console.log(isAuthenticated)
+        console.log(loading)
+        // if (accessToken !== "") return <Redirect to="/" />
+        // let isAuthenticated = this.state.isAuthenticated;
+        if(isAuthenticated === false || accessToken !== null){
+            return <Redirect to="/" />
+        }
         return (
+            <LoadingMask loading={this.state.loading} loadingText={"loading..."}>
             <div className="container mt-5">
 
                 <Alert show={this.state.show} onClose={() => this.showAlert(false) } variant={this.state.typeAlert} dismissible>
@@ -102,6 +116,7 @@ class Login extends Component {
                     Don't Have An Account? Let's <Link to="/register" >Create Account</Link>
                 </p>
             </div>
+            </LoadingMask>
         )
     }
 }
