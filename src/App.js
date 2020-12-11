@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Login from './components/login_page/Login';
 import Register from './components/register_page/Register';
 import ListGame from './components/list_game_page/ListGame';
-import GamePlay from "./components/gameplay_page/gameplay"
+import GamePlay from "./components/gameplay_page/gameplay";
+import Profile from './components/profile_page/Profile';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavHeader } from './components/NavHeader';
@@ -19,9 +20,8 @@ class App extends Component {
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
             <Route path="/gamePlay" component={GamePlay}/>
-            {/* <Route path="/game" component={Game} />
-            <Route path="/user" component={User}/>
-            <Route path="/history" component={Log}/> */}
+            <Route path="/profile" component={Profile}/>
+            {/* <Route path="/profile" component={ () => <Profile  isAuth={this.state.isAuth} user={this.state.user} />}/> */}
           </Switch>
         </div>
       </Router>

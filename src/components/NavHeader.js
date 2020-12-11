@@ -12,6 +12,7 @@ export const NavHeader = () => {
                     <NavLink className="nav-link" to="/game">Game</NavLink>
                     <NavLink className="nav-link" to="/user">User</NavLink>
                     <NavLink className="nav-link" to="/history">History</NavLink>
+                    <NavLink className="nav-link" to="/profile">Profile</NavLink>
                 </Nav>
                 <Nav>
                     <NavLink className="nav-link" to="/login">Login</NavLink>
