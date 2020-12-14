@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import logo from '../../assets/babastudio-logo.png';
-import imageslider from '../../assets/banner-desktop.jpg';
+// import logo from '../../assets/babastudio-logo.png';
+// import imageslider from '../../assets/banner-desktop.jpg';
 import imagesliderr from '../../assets/21cineplex.jpg';
 import imagesliderrr from '../../assets/bpn.jpg';
 import imagesliderrrr from '../../assets/republika.jpg';

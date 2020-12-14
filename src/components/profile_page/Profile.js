@@ -1,51 +1,24 @@
 import React, { Component } from 'react';
-import { Form, Row, Col, Container, Image, Button, Table } from 'react-bootstrap';
-import { Redirect, Link } from 'react-router-dom';
-import { GetProfile, UpdateProfile} from './../../services/profile/Profile';
-import LoadingMask from 'react-loadingmask';
-import 'react-loadingmask/dist/react-loadingmask.css';
+import { Form, Button} from 'react-bootstrap';
+import { UpdateProfile} from './../../services/profile/Profile';
 
 class Profile extends Component  {
     state = {
-        isAuthenticated: true,
-        token : localStorage.getItem('accessToken'),
-        id : localStorage.getItem('user_id'),
-        user: {},
-        loading: true
-    }
-
-    ceckUser = () => {
-        GetProfile(this.state.token, this.state.id)
-        .then(res => {
-            console.log(res)
-            if(res.success === false){
-                this.setState({ isAuthenticated: false})
-            } else {
-                this.setState({user: res, isAuthenticated: true, loading: false})
-            }
-            
-        })
-        .catch(err => {
-            console.log(err);
-            this.setState({ isAuthenticated: false })
-        })
+        isAuthenticated: this.props.isAuthenticated,
+        user: this.props.user,
     }
 
     componentDidMount() {
-        console.log("component did mount");
-        this.ceckUser()
-    }
-
-    componentDidUpdate() {
-        console.log("component did update");
+        console.log("component did mount on profile page");
+        console.log(this.props.user)
     }
 
     onChange = (e) => {
-        let user = this.state.user;
+        let user = this.props.user;
         if(e.target.name === 'username'){
             user.username = e.target.value
         } else if(e.target.name === 'email'){
-            user.email = e.target.email
+            user.email = e.target.value
         } else if (e.target.name === 'firstname'){
             user.firstname = e.target.value
         } else if (e.target.name === 'lastname') {
@@ -68,8 +41,8 @@ class Profile extends Component  {
     handleSubmit = (event) => {
         this.setState({loading: true})
         event.preventDefault();
-        console.log(this.state.user)
-        UpdateProfile(this.state.token, this.state.id, this.state.user)
+        console.log(this.props.user)
+        UpdateProfile(this.state.token, this.state.id, this.props.user)
         .then(res=> {
             console.log(res);
             this.setState({loading: false})
@@ -81,80 +54,49 @@ class Profile extends Component  {
     }
 
     render() {
-        // if( this.state.token === "" || this.state.token === null ) {
-        //     return <Redirect to="/login" />
-        // }
-        let isAuthenticated = this.state.isAuthenticated;
-        if(!isAuthenticated){
-            return <Redirect to="/login" />
+        console.log('props ok', this.props.location)
+        console.log('props user ok', this.props.user)
+
+        if(this.props.location !== 'Profile'){
+            return null
         }
         return (
-            <LoadingMask loading={this.state.loading} loadingText={"loading..."}>
-            <Container>
-                <Row className="justify-content-md-center mt-5">
-                    <Col md={3}>
-                        <Table hover>
-                            <tbody>
-                                <tr>
-                                    <td>Profile</td>
-                                </tr>
-                                <tr>
-                                    <td><Link className="text-dark" to="/change-password">Change Password</Link></td>
-                                </tr>
-                                <tr>
-                                    <td>Log Activity</td>
-                                </tr>
-                            </tbody>
-                        </Table>
-                    </Col>
-                    
-                    <Col md={6}>
-                        <h3>Public Profile</h3>
-                        <hr></hr>
-                        
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group>
-                                <Form.Label >UserName</Form.Label>
-                                <Form.Control value={this.state.user.username} onChange={(e) => this.onChange(e)} name="username" />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label >FirstName</Form.Label>
-                                <Form.Control value={this.state.user.firstname} onChange={(e) => this.onChange(e)} name="firstname"  />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label >LastName</Form.Label>
-                                <Form.Control value={this.state.user.lastname} onChange={(e) => this.onChange(e)} name="lastname" />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control value={this.state.user.email} onChange={(e) => this.onChange(e)} name="email" />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>BirthDate</Form.Label>
-                                <Form.Control value={this.state.user.birthdate} onChange={(e) => this.onChange(e)} name="birthdate" placeholder="2020-12-12" />
-                                {/* <DatePicker selected={this.state.user.birthdate}></DatePicker> */}
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Sex</Form.Label>
-                                <Form.Control as="select" value={this.state.user.gender} onChange={(e) => this.onChange(e)} name="gender" >
-                                    <option value="">Choosee</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Address</Form.Label>
-                                <Form.Control as="textarea" col={3} value={this.state.user.address} onChange={(e) => this.onChange(e)} name="address"/>
-                            </Form.Group>
-                            <Button type="submit">Update</Button>
-                        </Form>
-                    </Col>
-                    <Col md={2}>
-                        <Image src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" width="171px" height="180px" roundedCircle />
-                    </Col>
-                </Row>
-            </Container>
-            </LoadingMask>
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group>
+                        <Form.Label >UserName</Form.Label>
+                        <Form.Control value={this.props.user.username} onChange={(e) => this.onChange(e)} name="username" />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label >FirstName</Form.Label>
+                        <Form.Control value={this.props.user.firstname} onChange={(e) => this.onChange(e)} name="firstname"  />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label >LastName</Form.Label>
+                        <Form.Control value={this.props.user.lastname} onChange={(e) => this.onChange(e)} name="lastname" />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control value={this.props.user.email} onChange={(e) => this.onChange(e)} name="email" />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>BirthDate</Form.Label>
+                        <Form.Control value={this.props.user.birthdate} onChange={(e) => this.onChange(e)} name="birthdate" placeholder="2020-12-12" />
+                        {/* <DatePicker selected={this.props.user.birthdate}></DatePicker> */}
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Sex</Form.Label>
+                        <Form.Control as="select" value={this.props.user.gender} onChange={(e) => this.onChange(e)} name="gender" >
+                            <option value="">Choosee</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Address</Form.Label>
+                        <Form.Control as="textarea" col={3} value={this.props.user.address} onChange={(e) => this.onChange(e)} name="address"/>
+                    </Form.Group>
+                    <Button type="submit">Update</Button>
+                </Form>
         )
     }
 
