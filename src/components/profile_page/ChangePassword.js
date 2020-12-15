@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Form, Row, Col, Container, Image, Button, Table } from 'react-bootstrap';
+import {ChangePasswd} from './../../services/profile/Profile';
 
 class ChangePassword extends Component {
 
@@ -13,6 +14,8 @@ class ChangePassword extends Component {
         validForm : "",
         typeAlert: "",
         show : false,
+        token : localStorage.getItem('accessToken'),
+        id : localStorage.getItem('user_id'),
     }
 
     showAlert = (status, type, message) => {
@@ -26,19 +29,19 @@ class ChangePassword extends Component {
 
     reg = () => {
         console.log(this.state.user)
-        // RegUser(this.state.user)
-        // .then(res => {
-        //     if(res.message === "register success") {
-        //         console.log(res)
-        //         this.showAlert(true, "success", res.message)
-        //     } else {
-        //         this.showAlert(true, "danger", res.message)
-        //     }
+        ChangePasswd(this.state.token, this.state.id, this.state.user)
+        .then(res => {
+            console.log(res)
+            if(res.message === "Change password was updated successfully") {
+                this.showAlert(true, "success", res.message)
+            } else {
+                this.showAlert(true, "danger", res.message)
+            }
             
-        // })
-        // .catch(err => {
-        //     this.showAlert(true, "danger", "404 Page Not Found")
-        // })
+        })
+        .catch(err => {
+            this.showAlert(true, "danger", "404 Page Not Found")
+        })
     }
 
     invalidPassword = () => {
@@ -59,15 +62,13 @@ class ChangePassword extends Component {
 
     onChangeForm = (e) => {
         let user = this.state.user;
-        if (e.target.name === 'password'){
+        if (e.target.name === 'newPassword'){
             user.password = e.target.value
-        } else if (e.target.name === 'newPassword'){
-            user.newPassword = e.target.value
         } else if (e.target.name === 'confirmNewPassword'){
-            user.confirmNewPassword = e.target.value
+            user.confirm_password = e.target.value
         }
-        if(("confirmNewPassword" in user)){
-            if(user.newPassword !== user.confirmNewPassword){
+        if(("confirm_password" in user)){
+            if(user.password !== user.confirm_password){
                 this.invalidPassword()
             } else {
                 this.validPassword()
@@ -91,57 +92,37 @@ class ChangePassword extends Component {
     }
 
     render() {
+        if(this.props.location !== 'Change Password'){
+            console.log('props ok', this.props.location)
+            return null
+        }
         return (
-            <Container>
-                <Row className="justify-content-md-center mt-5">
-                    <Col md={3}>
-                        <Table hover>
-                            <tbody>
-                                <tr>
-                                    <td><Link className="text-dark" to="/profile">Profile</Link></td>
-                                </tr>
-                                <tr>
-                                    <td>History</td>
-                                </tr>
-                                <tr>
-                                    <td>Log Activity</td>
-                                </tr>
-                            </tbody>
-                        </Table>
-                    </Col>
-                    <Col md={6}>
-                        <h3>Change Password</h3>
-                        <hr></hr>
-                        <Form className="" noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
-                        
-                        <Form.Group controlId="formBasicPassword">
-                            <Form.Label className="font-weight-bold">Password</Form.Label>
-                            <Form.Control className={this.state.validForm} type="password" onChange={ (e)=>this.onChangeForm(e) } name="password" placeholder="Password"  required />
-                        </Form.Group>
+            <div>
+                <Alert show={this.state.show} onClose={() => this.showAlert(false) } variant={this.state.typeAlert} dismissible>
+                    <Alert.Heading>How's it going?!</Alert.Heading>
+                    <p>{this.state.message}</p>
+                </Alert>
+                <Form className="" noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
+                
+                    <Form.Group controlId="validationCustom02">
+                        <Form.Label className="font-weight-bold">New Password</Form.Label>
+                        <Form.Control className={this.state.validForm} type="password" onChange={ (e)=>this.onChangeForm(e) } name="newPassword" placeholder="New Password" required />
+                        <div className={this.state.classValid} type="invalid">{this.state.message}</div>
+                        <Form.Control.Feedback type="invalid">Please provide a valid password.</Form.Control.Feedback>
+                    </Form.Group>
+                    
+                    <Form.Group controlId="validationCustom02">
+                        <Form.Label className="font-weight-bold">Confirm New Password</Form.Label>
+                        <Form.Control className={this.state.validForm} type="password" onChange={ (e)=>this.onChangeForm(e) } name="confirmNewPassword" placeholder="Confirm New Password" required />
+                        <div className={this.state.classValid} type="invalid">{this.state.message}</div>
+                        <Form.Control.Feedback type="invalid">Please provide a valid password.</Form.Control.Feedback>
+                    </Form.Group>
 
-                        <Form.Group controlId="validationCustom02">
-                            <Form.Label className="font-weight-bold">New Password</Form.Label>
-                            <Form.Control className={this.state.validForm} type="password" onChange={ (e)=>this.onChangeForm(e) } name="newPassword" placeholder="New Password" required />
-                            <div className={this.state.classValid} type="invalid">{this.state.message}</div>
-                            <Form.Control.Feedback type="invalid">Please provide a valid password.</Form.Control.Feedback>
-                        </Form.Group>
-                        
-                        <Form.Group controlId="validationCustom02">
-                            <Form.Label className="font-weight-bold">Confirm New Password</Form.Label>
-                            <Form.Control className={this.state.validForm} type="password" onChange={ (e)=>this.onChangeForm(e) } name="confirmNewPassword" placeholder="Confirm New Password" required />
-                            <div className={this.state.classValid} type="invalid">{this.state.message}</div>
-                            <Form.Control.Feedback type="invalid">Please provide a valid password.</Form.Control.Feedback>
-                        </Form.Group>
-
-                        <Button variant="primary" type="submit" >
-                            Submit
-                        </Button>
-                    </Form>
-                    </Col>
-                    <Col md={2}>
-                    </Col>
-                </Row>
-            </Container>
+                    <Button variant="primary" type="submit" >
+                        Submit
+                    </Button>
+                </Form>
+            </div>
         )
     }
 }
