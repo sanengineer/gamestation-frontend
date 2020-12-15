@@ -1,29 +1,51 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import { Navbar, Nav} from 'react-bootstrap';
+import React, { Component } from 'react';
+import {Container,Navbar, Nav,NavDropdown,Button} from 'react-bootstrap';
+import {CornerComponent} from "./CornerComponent";
+import UserService from "../services/userService";
 
-export const NavHeader = () => {
-    return(
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <NavLink className="navbar-brand" to="/">Home</NavLink>
+
+class NavHeader extends Component{
+
+    state={
+        token:localStorage.getItem('accessToken'),
+        id:localStorage.getItem('user_id'),
+        me:{}
+    }
+    componentDidMount=()=>{
+        if(this.state.token){
+            UserService.me(this.state.token).then((result)=>{
+                this.setState({me:result.data.data.email})
+                console.log(result.data.data)
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
+    }
+    render(){
+        let{token,me} = this.state;
+        return(
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+            <Container>
+            <Navbar.Brand href="/">Home</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mx-auto">
-                    <NavLink className="nav-link" to="/game">Game</NavLink>
-                    <NavLink className="nav-link" to="/user">User</NavLink>
-                    <NavLink className="nav-link" to="/history">History</NavLink>
-                    <NavLink className="nav-link" to="/profile">Profile</NavLink>
-                </Nav>
-                <Nav>
-                    <NavLink className="nav-link" to="/login">Login</NavLink>
-                    <NavLink className="nav-link" to="/register">Register</NavLink>
-                </Nav>
+              <Nav className="mr-auto ml-5">
+                <Nav.Link href="/under-construction">About Us</Nav.Link>
+                <Nav.Link href="/under-construction">Requirements</Nav.Link>
+                <Nav.Link href="/under-construction">Players</Nav.Link>
+                <Nav.Link href="/under-construction">Contact</Nav.Link>
+                <Nav.Link href="/under-construction">Help</Nav.Link>
+              </Nav>
+              <Nav>
+                  <CornerComponent
+                  whoMe={me}
+                  token={token}/>
+              </Nav>
             </Navbar.Collapse>
-            <Nav>
-                
-            </Nav>
-        </Navbar>
-    )
+            </Container>
+            </Navbar>
+        )
+    }
+  
 }
-
 export default NavHeader;

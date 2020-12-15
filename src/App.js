@@ -9,16 +9,15 @@ import ScoreProfile from './components/profile_page/ScoreProfile';
 import MainProfile from './components/profile_page/MainProfile';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { NavHeader } from './components/NavHeader';
+import NavHeader from './components/NavHeader.js';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { NavLoggedIn } from './components/NavBar_homepage/NavLoggedIn';
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div className="App">
-          <NavLoggedIn></NavLoggedIn>
+          <NavHeader/>
           <Switch>
             <Route exact path="/" component={ListGame}/>
             <Route path="/login" component={Login}/>
