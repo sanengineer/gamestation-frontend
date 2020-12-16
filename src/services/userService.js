@@ -6,6 +6,7 @@ class UserService {
   }
 
   postHistory=(token,gameResult)=>{
+    // console.log(token,gameResult)
     return requestHeader.post("/history",gameResult, { headers: {Authorization:token}})
   }
 

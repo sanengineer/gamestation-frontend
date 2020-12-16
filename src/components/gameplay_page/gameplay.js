@@ -9,11 +9,13 @@ import {Reset} from "./reset.js";
 import {Header} from "./header.js"
 import {ModalsConfirm} from "./modalsConfirm"
 import {Redirect} from 'react-router-dom';
+import UserService from "../../services/userService.js"
 
 class Gameplay extends Component{
 
     state={
         token : localStorage.getItem('accessToken'),
+        id : localStorage.getItem('user_id'),
         selectStone:false,
         selectPaper:false,
         selectScissors:false,
@@ -101,6 +103,19 @@ class Gameplay extends Component{
         }
         this.setState({matchResult:classId,resetState:true});
         console.log(`match result ${classId}`)
+
+        //Post data to server
+        let gameResult ;
+        switch (classId){
+            case "player-win" :  UserService.postHistory(this.state.token,{user_id:this.state.id,high_score:3});
+            return;
+            
+            case "draw" :  UserService.postHistory(this.state.token,{user_id:this.state.id,high_score:1});
+            return;
+
+            case "com-win" :  UserService.postHistory(this.state.token,{user_id:this.state.id,high_score:0});
+            return;
+        }   
     }
 
     reset=()=>{
