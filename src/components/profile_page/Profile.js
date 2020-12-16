@@ -39,6 +39,7 @@ class Profile extends Component  {
     }
 
     handleSubmit = (event) => {
+        console.log("function called")
         this.setState({loading: true})
         event.preventDefault();
         console.log(this.props.user)
@@ -61,7 +62,7 @@ class Profile extends Component  {
             return null
         }
         return (
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={()=>this.handleSubmit}>
                     <Form.Group>
                         <Form.Label >UserName</Form.Label>
                         <Form.Control value={this.props.user.username} onChange={(e) => this.onChange(e)} name="username" />
