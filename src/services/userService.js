@@ -10,6 +10,7 @@ class UserService {
   }
 
   me=(token)=>{
+    console.log(token)
     return requestHeader.get("me/",{headers: {Authorization:token}})
   }
 }

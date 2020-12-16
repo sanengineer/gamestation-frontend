@@ -19,6 +19,9 @@ class NavHeader extends Component{
             }).catch((err)=>{
                 console.log(err);
             })
+        } else {
+            console.log("no token")
+            return
         }
     }
     render(){

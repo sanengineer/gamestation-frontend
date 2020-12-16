@@ -8,10 +8,12 @@ import "./gamePlay.css";
 import {Reset} from "./reset.js";
 import {Header} from "./header.js"
 import {ModalsConfirm} from "./modalsConfirm"
+import {Redirect} from 'react-router-dom';
 
 class Gameplay extends Component{
 
     state={
+        token : localStorage.getItem('accessToken'),
         selectStone:false,
         selectPaper:false,
         selectScissors:false,
@@ -107,10 +109,14 @@ class Gameplay extends Component{
     }
     
     render(){
-        let{selectStone,selectPaper,selectScissors,comSelectPaper,comSelectScissors,comSelectStone,imgHover,
+        let{token,selectStone,selectPaper,selectScissors,comSelectPaper,comSelectScissors,comSelectStone,imgHover,
             matchResult,resetState} = this.state;
         let hover= imgHover? "img-hover" : "";
         
+        if(token===""||token===null){
+            return <Redirect to="/login" />
+        }
+
         return(
             <div className="gameplay pt-2">
             <Header
