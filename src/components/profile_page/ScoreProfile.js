@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
+import { GetScoreSummary } from './../../services/profile/Profile';
 
 class ScoreProfile extends Component {
 
@@ -10,11 +11,39 @@ class ScoreProfile extends Component {
         id : localStorage.getItem('user_id'),
     }
 
+    componentDidMount() {
+        console.log("compoennt didi mount on score profile")
+        GetScoreSummary(this.state.token, this.state.id)
+        .then(res => {
+            if(('data' in res)){
+                this.setState({ listScore: res.data})
+            } else {
+                this.setState({ listScore: res.data})
+            }
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+
     render() {
         if(this.props.location !== 'History'){
             console.log('props ok', this.props.location)
             return null
         }
+
+        const GameRow = (game, index) => {
+            return (
+                <tr key={ index }>
+                    <th>{ game.name }</th>
+                    <td>{ game.lastGame }</td>
+                    <td><h4> { game.score } </h4></td>
+                </tr>
+            )
+        }
+
+        // const gameTable = this.state.listScore.map((game, index) => GameRow(game, index))
+
         return (
             
             <Table striped bordered hover className="text-center" >
@@ -26,21 +55,7 @@ class ScoreProfile extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>RPS</th>
-                        <td>Has Played on October 2020</td>
-                        <td><h4>21</h4></td>
-                    </tr>
-                    <tr>
-                        <th>ULAR</th>
-                        <td>Has Played on October 2020</td>
-                        <td><h4>54</h4></td>
-                    </tr>
-                    <tr>
-                        <th>AMONG</th>
-                        <td>Larry the Bird</td>
-                        <td><h4>91</h4></td>
-                    </tr>
+                    {/* { gameTable } */}
                 </tbody>
             </Table>
         )

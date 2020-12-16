@@ -1,4 +1,4 @@
-.wraaper{
+ /* .wraaper{
     
     height: auto;
     margin: auto;
@@ -7,12 +7,12 @@
     background-color: black;
     height: 100px;
     width: 100%;
-}
-/* .navbar{
+} 
+.navbar{
     height: 100px;
     width: 1200px;
     margin: auto;
-} */
+}
 .logo{
     width: 600px;
    
@@ -226,4 +226,4 @@
     width: 250px;
     border-radius: 20px;
     margin-right: 10px;
-}
+}  */

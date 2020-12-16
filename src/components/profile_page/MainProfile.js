@@ -7,6 +7,8 @@ import { GetProfile} from './../../services/profile/Profile';
 import LoadingMask from 'react-loadingmask';
 import {Redirect} from 'react-router-dom';
 import 'react-loadingmask/dist/react-loadingmask.css';
+import Navbar from "../NavHeader";
+import Footer from "../footer/index";
 
 class MainProfile extends Component {
 
@@ -18,8 +20,6 @@ class MainProfile extends Component {
         disable: "disabled",
         location: "Profile",
         isAuthenticated: true,
-        token : localStorage.getItem('accessToken'),
-        id : localStorage.getItem('user_id'),
         loading: true
     }
 
@@ -65,6 +65,7 @@ class MainProfile extends Component {
 
         return (
             <LoadingMask loading={this.state.loading} text={"loading..."} >
+                <Navbar/>
                 <Container>
                     <Row className="justify-content-md-center mt-5">
                         <Col md={3}>
@@ -91,6 +92,7 @@ class MainProfile extends Component {
                         </Col>
                     </Row>
                 </Container>
+                <Footer/>
             </LoadingMask>
         )
     }

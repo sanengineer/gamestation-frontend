@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Footer from "./footer/index"
 
 export default class UnderconstructionPage extends Component {
   render() {

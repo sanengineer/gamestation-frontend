@@ -103,19 +103,27 @@ class Gameplay extends Component{
         }
         this.setState({matchResult:classId,resetState:true});
         console.log(`match result ${classId}`)
+        this.postData(classId)
+    }
 
-        //Post data to server
-        let gameResult ;
+    //Post data to server
+    postData=(classId)=>{
+        let gameResult;
         switch (classId){
-            case "player-win" :  UserService.postHistory(this.state.token,{user_id:this.state.id,high_score:3});
-            return;
+            case "player-win" :gameResult=3;
+            break;
             
-            case "draw" :  UserService.postHistory(this.state.token,{user_id:this.state.id,high_score:1});
-            return;
+            case "draw" : gameResult=1;
+            break;
 
-            case "com-win" :  UserService.postHistory(this.state.token,{user_id:this.state.id,high_score:0});
-            return;
-        }   
+            case "com-win" : gameResult=0;
+            break;
+        } 
+        UserService.postHistory(this.state.token,{user_id:this.state.id,game_id:7,high_score:gameResult}).then((result)=>{
+            console.log(result);
+        }).catch((err)=>{
+            console.log(err);
+        })
     }
 
     reset=()=>{

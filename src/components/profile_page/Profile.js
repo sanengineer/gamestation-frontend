@@ -5,7 +5,7 @@ import { UpdateProfile} from './../../services/profile/Profile';
 class Profile extends Component  {
     state = {
         isAuthenticated: this.props.isAuthenticated,
-        user: this.props.user,
+        user: {},
     }
 
     componentDidMount() {
@@ -14,7 +14,7 @@ class Profile extends Component  {
     }
 
     onChange = (e) => {
-        let user = this.props.user;
+        let user = this.state.user;
         if(e.target.name === 'username'){
             user.username = e.target.value
         } else if(e.target.name === 'email'){
@@ -40,18 +40,18 @@ class Profile extends Component  {
 
     handleSubmit = (event) => {
         console.log("function called")
-        this.setState({loading: true})
-        event.preventDefault();
-        console.log(this.props.user)
-        UpdateProfile(this.state.token, this.state.id, this.props.user)
-        .then(res=> {
-            console.log(res);
-            this.setState({loading: false})
-        })
-        .catch(err=>{
-            console.log(err);
-            this.setState({loading: false})
-        })
+        // this.setState({loading: true})
+        // event.preventDefault();
+        // console.log(this.props.user)
+        // UpdateProfile(this.state.token, this.state.id, this.props.user)
+        // .then(res=> {
+        //     console.log(res);
+        //     this.setState({loading: false})
+        // })
+        // .catch(err=>{
+        //     console.log(err);
+        //     this.setState({loading: false})
+        // })
     }
 
     render() {
