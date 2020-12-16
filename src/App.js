@@ -10,6 +10,8 @@ import MainProfile from './components/profile_page/MainProfile';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavHeader from './components/NavHeader.js';
+import Footer from "./components/footer/index.js";
+import Underconstruction from "./components/underConstruction.js";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
@@ -23,12 +25,10 @@ class App extends Component {
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
             <Route path="/gamePlay" component={GamePlay}/>
-            {/* <Route path="/profile" component={Profile}/>
-            <Route path="/change-password" component={ChangePassword}/>
-            <Route path="/history" component={ScoreProfile}/> */}
             <Route path="/main-profile" component={MainProfile}/>
-            {/* <Route path="/profile" component={ () => <Profile  isAuth={this.state.isAuth} user={this.state.user} />}/> */}
+            <Route path="/under-construction" component={Underconstruction}/>
           </Switch>
+          <Footer/>
         </div>
       </Router>
     );
