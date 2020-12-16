@@ -7,6 +7,7 @@ export const CornerComponent=({token,whoMe})=>{
         localStorage.removeItem('accessToken');
         window.location.reload();
     }   
+   console.log("on corner "+ whoMe)
     if(token){
         return(
             <NavDropdown className="" title={

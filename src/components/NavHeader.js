@@ -9,13 +9,12 @@ class NavHeader extends Component{
     state={
         token:localStorage.getItem('accessToken'),
         id:localStorage.getItem('user_id'),
-        me:{}
+        me:""
     }
     componentDidMount=()=>{
         if(this.state.token){
             UserService.me(this.state.token).then((result)=>{
                 this.setState({me:result.data.data.email})
-                console.log(result.data.data)
             }).catch((err)=>{
                 console.log(err);
             })
